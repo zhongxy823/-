@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <style>
+        .title{
+            position: fixed;
+            top: 0;
+            height: 50px;
+            width: 100%;
+            background-color: #fff;
+            z-index: 2;
+        }
+        .titleBox {
+            height: 30px;
+            line-height: 30px;
+            margin: 10px 20px;
+            background-color: #e6ebf2;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .titleBox a{
+            display: inline-block;
+            width: 100px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .infoActive {
+            background-color: blue;
+            color: #fff;
+        }
+
+        .content {
+            margin: 50px 20px 0;
+            position: relative;
+            height: calc(100% - 70px);
+            overflow: auto;
+        }
+        .infoItem{
+            height: 500px;
+            width: 100%
+            box-sizing: border-box;
+            border: 1px solid #000;
+            margin: 20px;
+        }
+        #app{
+            height: 100%;
+        }
+
+        html,body{
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+    <body>
+      <div id="app"> 
+          <div class="title">
+              <div class="titleBox">
+                  <a to="baseInfo" onclick="jump('baseInfo')" class="baseInfoTitle infoActive infoTitle">基本信息</a>
+                  <a to="fileInfo" onclick="jump('fileInfo')" class="fileInfoTitle infoTitle">产品资料</a>
+                  <a to="certiInfo" onclick="jump('certiInfo')" class="certiInfoTitle infoTitle">产品证件</a>
+              </div>
+          </div>
+
+          <div class="content" id='content'>
+            <div class="baseInfo infoItem"></div>
+            <div class="fileInfo infoItem"></div>
+            <div class="certiInfo infoItem"></div>
+          </div>
+      </div> 
+    </body>
+</html>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+    var anchorMove = true;
+    $(function(){
+     //获取到每个infoItem的高度
+        var anchorList = [];
+        setTimeout(function () {
+           for (var i = 0, height = 0; i < $('.infoItem').length; i++) {
+             height = height + $('.infoItem').eq(i).outerHeight() + 15
+             anchorList.push(height);
+           }
+        }, 500);
+        var father = document.getElementById('content');
+        father.addEventListener('scroll', function(){
+            if(anchorMove){
+                var scrollTop = $('#content').scrollTop();
+                if (scrollTop < anchorList[0]) {
+                    $('.infoTitle').eq(0).addClass('infoActive');
+                    $('.infoTitle').eq(0).siblings().removeClass('infoActive');
+                } else if (scrollTop < anchorList[1]) {
+                    $('.infoTitle').eq(1).addClass('infoActive');
+                    $('.infoTitle').eq(1).siblings().removeClass('infoActive');
+                } else if (scrollTop < anchorList[2]) {
+                    $('.infoTitle').eq(2).addClass('infoActive');
+                    $('.infoTitle').eq(2).siblings().removeClass('infoActive');
+                }
+            }
+        });
+    });
+    function jump(index){
+        anchorMove = false;
+        // duration:动画时长
+        $('#content').animate({
+          scrollTop: $('.' + index).offset().top + $('#content').scrollTop() - 70
+        }, {duration: 400, easing: "swing"});
+        $('.' + index + 'Title').addClass('infoActive');
+        $('.' + index + 'Title').siblings().removeClass('infoActive');
+        setTimeout(function () {
+          anchorMove = true;
+        }, 500)
+    }
+
+</script>
