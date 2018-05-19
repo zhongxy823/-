@@ -1,0 +1,4 @@
+# Anchor-point
+用jquery的addEventListener与animate做的一个锚点demo
+
+监听dom元素的滚动事件实现锚点
